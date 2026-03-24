@@ -173,7 +173,7 @@ This makes it important to treat such activity with higher priority than typical
 
 ## Summary
 
-The investigation confirmed that the user `employee` installed and actively used the TOR browser on a corporate endpoint.
+The investigation confirmed that the user `nick` installed and actively used the TOR browser on a corporate endpoint.
 
 Key observations:
 - Silent installation of TOR  
