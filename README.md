@@ -129,7 +129,7 @@ DeviceNetworkEvents
 2. Installer executed silently using `/S`  
 3. TOR browser processes launched (`tor.exe`, `firefox.exe`)  
 4. Network connections established over TOR-related ports  
-5. User created and deleted a file (`tor-shopping-list.txt`)  
+5. User created a file (`tor-shopping-list.txt`)  
 
 ---
 
@@ -139,7 +139,6 @@ DeviceNetworkEvents
 | :--- | :--- | :--- |
 | **Execution** | [User Execution (T1204.002)](https://attack.mitre.org/techniques/T1204/002/) | The user manually initiated the TOR installer, representing a deliberate policy violation. |
 | **Defense Evasion** | [Impair Defenses (T1562)](https://attack.mitre.org/techniques/T1562/) | The installer was executed with a silent flag (`/S`) to suppress UI notifications and bypass visual detection. |
-| **Defense Evasion** | [Indicator Removal (T1070.004)](https://attack.mitre.org/techniques/T1070/004/) | The user manually deleted the `tor-shopping-list.txt` file to clear evidence of their activity on the host system. |
 | **Defense Evasion** | [Proxy (T1090)](https://attack.mitre.org/techniques/T1090/) | TOR was used to encapsulate traffic, bypassing organizational web filters and anonymizing outbound connections. |
 ---
 
