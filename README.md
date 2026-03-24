@@ -3,6 +3,9 @@
 - [Scenario Creation](https://github.com/nklpawar/unauthorized-tor-usage-investigation/blob/main/scenario-creation-tor.md)
 
 ---
+<img width="500" src="images/Intro.png">
+
+---
 
 ## Platforms and Technologies Used
 - Windows 11 Pro Virtual Machine (Microsoft Azure)
