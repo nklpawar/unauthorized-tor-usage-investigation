@@ -1,97 +1,95 @@
-# Threat Event (Unauthorized TOR Usage)
-**Unauthorized TOR Browser Installation and Use**
+# Scenario: Shadow IT – Unauthorized TOR Usage
 
-## Steps the "Bad Actor" took Create Logs and IoCs:
-1. Download the TOR browser installer: https://www.torproject.org/download/
-2. Install it silently: ```tor-browser-windows-x86_64-portable-14.0.1.exe /S```
-3. Opens the TOR browser from the folder on the desktop
-4. Connect to TOR and browse a few sites. For example:
-   - **WARNING: The links to onion sites change a lot and these have changed. However if you connect to Tor and browse around normal sites a bit, the necessary logs should still be created:**
-   - Current Dread Forum: ```dreadytofatroptsdj6io7l3xptbet6onoyno2yv7jicoxknyazubrad.onion```
-   - Dark Markets Forum: ```dreadytofatroptsdj6io7l3xptbet6onoyno2yv7jicoxknyazubrad.onion/d/DarkNetMarkets```
-   - Current Elysium Market: ```elysiumutkwscnmdohj23gkcyp3ebrf4iio3sngc5tvcgyfp4nqqmwad.top/login```
+## Overview
+This scenario simulates a case of Shadow IT where a user installs and uses the TOR browser on a corporate-managed device without authorization.
 
-6. Create a folder on your desktop called ```tor-shopping-list.txt``` and put a few fake (illicit) items in there
-7. Delete the file.
+While Shadow IT is typically considered a policy violation, the use of anonymization tools like TOR introduces additional security concerns such as evasion of monitoring, untracked network activity, and potential misuse.
+
+The purpose of this scenario is to generate realistic telemetry that can later be used for threat hunting and detection.
 
 ---
 
-## Tables Used to Detect IoCs:
-| **Parameter**       | **Description**                                                              |
-|---------------------|------------------------------------------------------------------------------|
-| **Name**| DeviceFileEvents|
-| **Info**|https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-deviceinfo-table|
-| **Purpose**| Used for detecting TOR download and installation, as well as the shopping list creation and deletion. |
-
-| **Parameter**       | **Description**                                                              |
-|---------------------|------------------------------------------------------------------------------|
-| **Name**| DeviceProcessEvents|
-| **Info**|https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-deviceinfo-table|
-| **Purpose**| Used to detect the silent installation of TOR as well as the TOR browser and service launching.|
-
-| **Parameter**       | **Description**                                                              |
-|---------------------|------------------------------------------------------------------------------|
-| **Name**| DeviceNetworkEvents|
-| **Info**|https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-devicenetworkevents-table|
-| **Purpose**| Used to detect TOR network activity, specifically tor.exe and firefox.exe making connections over ports to be used by TOR (9001, 9030, 9040, 9050, 9051, 9150).|
+## Objective
+- Simulate unauthorized software installation (TOR browser)
+- Generate endpoint and network logs related to TOR usage
+- Create artifacts that resemble suspicious user behavior
+- Provide a foundation for a structured threat hunting investigation
 
 ---
 
-## Related Queries:
-```kql
-// Installer name == tor-browser-windows-x86_64-portable-(version).exe
-// Detect the installer being downloaded
-DeviceFileEvents
-| where FileName startswith "tor"
+## Lab Setup and Actions Performed
 
-// TOR Browser being silently installed
-// Take note of two spaces before the /S (I don't know why)
-DeviceProcessEvents
-| where ProcessCommandLine contains "tor-browser-windows-x86_64-portable-14.0.1.exe  /S"
-| project Timestamp, DeviceName, ActionType, FileName, ProcessCommandLine
+The following steps were performed in a controlled lab environment to generate logs and indicators:
 
-// TOR Browser or service was successfully installed and is present on the disk
-DeviceFileEvents
-| where FileName has_any ("tor.exe", "firefox.exe")
-| project  Timestamp, DeviceName, RequestAccountName, ActionType, InitiatingProcessCommandLine
+1. Downloaded the TOR browser installer from:
+   https://www.torproject.org/download/
 
-// TOR Browser or service was launched
-DeviceProcessEvents
-| where ProcessCommandLine has_any("tor.exe","firefox.exe")
-| project  Timestamp, DeviceName, AccountName, ActionType, ProcessCommandLine
+2. Executed the installer silently:
+   ```
+   tor-browser-windows-x86_64-portable-15.0.7.exe /S
+   ```
 
-// TOR Browser or service is being used and is actively creating network connections
-DeviceNetworkEvents
-| where InitiatingProcessFileName in~ ("tor.exe", "firefox.exe")
-| where RemotePort in (9001, 9030, 9040, 9050, 9051, 9150)
-| project Timestamp, DeviceName, InitiatingProcessAccountName, InitiatingProcessFileName, RemoteIP, RemotePort, RemoteUrl
-| order by Timestamp desc
+3. Launched the TOR browser from the local directory
 
-// User shopping list was created and, changed, or deleted
-DeviceFileEvents
-| where FileName contains "shopping-list.txt"
-```
+4. Established TOR connections and browsed various sites  
+   (Note: Onion links change frequently. General browsing is sufficient to generate logs.)
+
+5. Created a file on the desktop:
+   ```
+   tor-shopping-list.txt
+   ```
+   Added sample content to simulate user intent
+
+6. Deleted the file to generate additional file activity logs
 
 ---
 
-## Created By:
-- **Author Name**: Josh Madakor
-- **Author Contact**: https://www.linkedin.com/in/joshmadakor/
-- **Date**: August 31, 2024
+## Expected Telemetry
 
-## Validated By:
-- **Reviewer Name**: 
-- **Reviewer Contact**: 
-- **Validation Date**: 
+The following types of logs are expected to be generated from this activity:
+
+### File Activity
+- TOR installer download
+- Presence of TOR-related binaries (`tor.exe`, `firefox.exe`)
+- Creation and deletion of user files
+
+### Process Activity
+- Execution of the TOR installer
+- Silent installation behavior
+- Launch of TOR browser processes
+
+### Network Activity
+- Outbound connections initiated by TOR processes
+- Traffic over commonly used TOR ports (e.g., 9001, 9030, 9050)
 
 ---
 
-## Additional Notes:
-- **None**
+## Data Sources
+
+The scenario is designed to be analyzed using the following Microsoft Defender for Endpoint tables:
+
+- `DeviceFileEvents`
+- `DeviceProcessEvents`
+- `DeviceNetworkEvents`
 
 ---
 
-## Revision History:
-| **Version** | **Changes**                   | **Date**         | **Modified By**   |
-|-------------|-------------------------------|------------------|-------------------|
-| 1.0         | Initial draft                  | `September  6, 2024`  | `Josh Madakor`   
+## Notes
+- This scenario was created in a controlled lab environment
+- The activity is intended for defensive security learning purposes only
+- No real malicious actions were performed
+
+---
+
+## Author
+
+- **Name**: Nikhil Pawar  
+- **Contact**: https://www.linkedin.com/in/nikhil-pawar-535710178/  
+
+---
+
+## Revision History
+
+| Version | Changes       | Date | Modified By   |
+|--------|--------------|------|---------------|
+| 1.0    | Initial draft | 2026 | Nikhil Pawar  |
