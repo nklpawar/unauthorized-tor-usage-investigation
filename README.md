@@ -164,7 +164,7 @@ This makes it important to treat such activity with higher priority than typical
 
 ### Suggested Improvements
 
-- Implement application allowlisting (e.g., AppLocker or Defender Application Control)  
+- Implement application allowlisting (e.g., ThreatLocker or Defender Application Control)  
 - Create custom detections for TOR-related process names and ports  
 - Monitor and alert on anonymization tools (TOR, VPN clients, proxies)  
 - Enhance network-level monitoring for suspicious encrypted traffic patterns  
