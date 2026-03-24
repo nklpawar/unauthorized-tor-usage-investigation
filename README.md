@@ -88,7 +88,7 @@ Multiple instances of `tor.exe` and `firefox.exe` were observed, confirming that
 
 ```kql
 DeviceProcessEvents  
-| where DeviceName == "threat-hunt-lab"  
+| where DeviceName == "nick-win-vm"  
 | where FileName has_any ("tor.exe", "firefox.exe", "tor-browser.exe")  
 | project Timestamp, DeviceName, AccountName, ActionType, FileName, FolderPath, SHA256, ProcessCommandLine  
 | order by Timestamp desc
@@ -100,18 +100,19 @@ DeviceProcessEvents
 
 ### 4. Network Analysis – TOR Activity
 
-Network telemetry confirmed active TOR communication.
+Network telemetry confirms active TOR-related network activity on the endpoint.
 
-Connections were observed over known TOR ports including `9001`, along with HTTPS traffic (`443`) and local proxy communication (`127.0.0.1:9150`).
+Multiple outbound connections were observed initiated by `tor.exe`, primarily over port `443`, along with additional connections over port `9001`. These connections were made to various external IP addresses and domains.
 
-This confirms anonymized browsing activity.
+The domains observed appear dynamically generated and non-standard, which is consistent with the way TOR routes traffic through different nodes.
+
+The repeated successful outbound connections, combined with the associated process (`tor.exe`), indicate that the TOR browser was actively running and generating network traffic.
 
 **Query used:**
 
 ```kql
 DeviceNetworkEvents  
-| where DeviceName == "threat-hunt-lab"  
-| where InitiatingProcessAccountName != "system"  
+| where DeviceName == "nick-win-vm"    
 | where InitiatingProcessFileName in ("tor.exe", "firefox.exe")  
 | where RemotePort in ("9001", "9030", "9040", "9050", "9051", "9150", "80", "443")  
 | project Timestamp, DeviceName, InitiatingProcessAccountName, ActionType, RemoteIP, RemotePort, RemoteUrl, InitiatingProcessFileName, InitiatingProcessFolderPath  
