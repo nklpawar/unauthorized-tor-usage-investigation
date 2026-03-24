@@ -92,4 +92,4 @@ The scenario is designed to be analyzed using the following Microsoft Defender f
 
 | Version | Changes       | Date | Modified By   |
 |--------|--------------|------|---------------|
-| 1.0    | Initial draft | 2026 | Nikhil Pawar  |
+| 1.0    | Initial draft | 03/24/2026 | Nikhil Pawar  |
