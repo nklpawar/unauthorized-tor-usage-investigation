@@ -69,8 +69,8 @@ Logs indicate that the TOR installer was run with a silent install flag (`/S`), 
 
 ```kql
 DeviceProcessEvents  
-| where DeviceName == "threat-hunt-lab"  
-| where ProcessCommandLine contains "tor-browser-windows-x86_64-portable-14.0.1.exe"  
+| where DeviceName == "nick-win-vm"  
+| where ProcessCommandLine contains "tor-browser-windows-x86_64-portable-15.0.7.exe"  
 | project Timestamp, DeviceName, AccountName, ActionType, FileName, FolderPath, SHA256, ProcessCommandLine
 ```
 
