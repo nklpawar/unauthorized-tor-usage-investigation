@@ -39,18 +39,18 @@ To validate TOR usage, the hunt was structured across three key areas:
 
 Initial analysis focused on identifying TOR-related file activity.
 
-Evidence shows that a user (`employee`) downloaded a TOR installer and multiple TOR-related files were written to disk. A file named `tor-shopping-list.txt` was also created and later deleted.
+Evidence shows that a user (`nick`) downloaded a TOR installer and multiple TOR-related files were written to disk. A file named `tor-shopping-list.txt` was also created and later deleted.
 
-Activity began around `2024-11-08T22:14:48.6065231Z`, which was used as the starting point for further investigation.
+Activity began around `2026-03-24T00:47:34.1097084Z`, which was used as the starting point for further investigation.
 
 **Query used:**
 
 ```kql
 DeviceFileEvents  
-| where DeviceName == "threat-hunt-lab"  
-| where InitiatingProcessAccountName == "employee"  
+| where DeviceName == "nick-win-vm"  
+| where InitiatingProcessAccountName == "nick"  
 | where FileName contains "tor"  
-| where Timestamp >= datetime(2024-11-08T22:14:48.6065231Z)  
+| where Timestamp >= datetime('2026-03-24T00:47:34.1097084Z')  
 | order by Timestamp desc  
 | project Timestamp, DeviceName, ActionType, FileName, FolderPath, SHA256, Account = InitiatingProcessAccountName
 ```
