@@ -150,10 +150,6 @@ DeviceNetworkEvents
 - Process telemetry validated that TOR was actually executed  
 - Network logs were the strongest confirmation of real usage  
 
-One important takeaway here is that **TOR usage itself is not inherently malicious**, but in a corporate environment, it significantly reduces visibility and increases risk.
-
-This makes it important to treat such activity with higher priority than typical Shadow IT cases.
-
 ---
 
 ## Detection Gaps and Improvements
