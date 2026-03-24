@@ -39,7 +39,7 @@ To validate TOR usage, the hunt was structured across three key areas:
 
 Initial analysis focused on identifying TOR-related file activity.
 
-Evidence shows that a user (`nick`) downloaded a TOR installer and multiple TOR-related files were written to disk. A file named `tor-shopping-list.txt` was also created and later deleted.
+Evidence shows that a user (`nick`) downloaded a TOR installer and multiple TOR-related files were written to disk. A file named `tor-shopping-list.txt` was also created.
 
 Activity began around `2026-03-24T00:47:34.1097084Z`, which was used as the starting point for further investigation.
 
